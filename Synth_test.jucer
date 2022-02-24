@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="WRd5Zh" name="Synth_test" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn"
+              cppLanguageStandard="17" bundleIdentifier="com.soomin">
   <MAINGROUP id="amyqlG" name="Synth_test">
     <GROUP id="{CDC76CBA-DF9D-729A-A1FF-5E321BD167E5}" name="Source">
       <FILE id="cST7TF" name="PluginProcessor.cpp" compile="1" resource="0"
@@ -33,6 +34,7 @@
         <MODULEPATH id="juce_graphics" path="../../JUCE_211222/JUCE_220210/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../JUCE_211222/JUCE_220210/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../JUCE_211222/JUCE_220210/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../JUCE_211222/JUCE_220210/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
   </EXPORTFORMATS>
@@ -46,6 +48,7 @@
     <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
