@@ -19,9 +19,11 @@ Synth_testAudioProcessor::Synth_testAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), apvts (*this, nullptr, "Parameters", createParams())
 #endif
 {
+    synth.addSound (new SynthSound());
+    synth.addVoice (new SynthVoice());
 }
 
 Synth_testAudioProcessor::~Synth_testAudioProcessor()
@@ -93,13 +95,20 @@ void Synth_testAudioProcessor::changeProgramName (int index, const juce::String&
 //==============================================================================
 void Synth_testAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    /*
     juce::dsp::ProcessSpec spec;
     spec.sampleRate = sampleRate;
     spec.numChannels = getTotalNumOutputChannels();
     spec.maximumBlockSize = samplesPerBlock;
-    
-    synthOsc.prepare (spec);
-    synthOsc.setFrequency (440.0f);
+    */
+    synth.setCurrentPlaybackSampleRate (sampleRate);
+    for (int i=0; i<synth.getNumVoices(); i++)
+    {
+        if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
+        {
+            voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
+        }
+    }
 }
 
 void Synth_testAudioProcessor::releaseResources()
@@ -144,7 +153,15 @@ void Synth_testAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         buffer.clear (i, 0, buffer.getNumSamples());
     
     juce::dsp::AudioBlock<float> audioBlock { buffer };
-    synthOsc.process (juce::dsp::ProcessContextReplacing<float> (audioBlock));
+     
+    for (int i = 0; i < synth.getNumVoices(); i++)
+    {
+        if (auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(i)))
+        {
+            
+        }
+    }
+    synth.renderNextBlock (buffer, midiMessages, 0, buffer.getNumSamples());
 }
 
 //==============================================================================
@@ -177,4 +194,16 @@ void Synth_testAudioProcessor::setStateInformation (const void* data, int sizeIn
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new Synth_testAudioProcessor();
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout Synth_testAudioProcessor::createParams()
+{
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+    
+    params.push_back (std::make_unique<juce::AudioParameterFloat> ("ATTACK", "ATTACK", juce::NormalisableRange<float> { 0.1f, 1.0f, 0.1f }, 0.1f));
+    params.push_back (std::make_unique<juce::AudioParameterFloat> ("DECAY", "DECAY", juce::NormalisableRange<float> { 0.1f, 1.0f, 0.1f }, 0.1f));
+    params.push_back (std::make_unique<juce::AudioParameterFloat> ("SUSTAIN", "SUSTAIN", juce::NormalisableRange<float> { 0.1f, 1.0f, 0.1f }, 1.0f));
+    params.push_back (std::make_unique<juce::AudioParameterFloat> ("RELEASE", "RELEASE", juce::NormalisableRange<float> { 0.1f, 3.0f, 0.1f }, 0.4f));
+    
+    return { params.begin(), params.end() };
 }

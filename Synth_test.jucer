@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="WRd5Zh" name="Synth_test" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn"
-              cppLanguageStandard="17" bundleIdentifier="com.soomin">
+              cppLanguageStandard="17" bundleIdentifier="com.soomin" companyName="Soomin">
   <MAINGROUP id="amyqlG" name="Synth_test">
     <GROUP id="{CDC76CBA-DF9D-729A-A1FF-5E321BD167E5}" name="Source">
       <FILE id="cST7TF" name="PluginProcessor.cpp" compile="1" resource="0"
@@ -12,6 +12,9 @@
       <FILE id="scvici" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="zrapqj" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="R68wTi" name="SynthVoice.cpp" compile="1" resource="0" file="Source/SynthVoice.cpp"/>
+      <FILE id="R9WO39" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
+      <FILE id="XBBSx1" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
