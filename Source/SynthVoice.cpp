@@ -17,6 +17,7 @@ bool SynthVoice::canPlaySound (juce::SynthesiserSound* sound)
 
 void SynthVoice::startNote (int midiNoteNumber, float velocity, juce::SynthesiserSound *sound, int currentPitchWheelPosition)
 {
+    /*
     currentAngle = 0.0f;
     level = velocity * 0.15;
     tailOff = 0.0;
@@ -24,11 +25,14 @@ void SynthVoice::startNote (int midiNoteNumber, float velocity, juce::Synthesise
     auto cyclesPerSecond = juce::MidiMessage::getMidiNoteInHertz (midiNoteNumber);
     auto cyclesPerSample = cyclesPerSecond / getSampleRate();
     
-    angleDelta = cyclesPerSample * 2.0 * juce::MathConstants<double>::pi;
+    angleDelta = cyclesPerSample * 2.0 * juce::MathConstants<double>::pi;*/
+    osc.setFrequency (juce::MidiMessage::getMidiNoteInHertz (midiNoteNumber));
+    adsr.noteOn();
 }
 
 void SynthVoice::stopNote (float velocity, bool allowTailOff)
 {
+    adsr.noteOff();
     if (allowTailOff)
     {
         if (tailOff == 0.0)
@@ -76,7 +80,7 @@ void SynthVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int outp
 void SynthVoice::renderNextBlock (juce::AudioBuffer< float > &outputBuffer, int startSample, int numSamples)
 {
     //jassert(isPrepared);
-    /*
+    
     if (! isVoiceActive())
         return ;
     
@@ -85,15 +89,9 @@ void SynthVoice::renderNextBlock (juce::AudioBuffer< float > &outputBuffer, int 
     
     juce::dsp::AudioBlock<float> audioBlock { synthBuffer };
     
-    if (adsr.isActive())
-        osc.process (juce::dsp::ProcessContextReplacing<float> (audioBlock));
-    else
-        osc2.process (juce::dsp::ProcessContextReplacing<float> (audioBlock));
+    osc.process (juce::dsp::ProcessContextReplacing<float> (audioBlock));
     gain.process (juce::dsp::ProcessContextReplacing<float> (audioBlock));
-    if (adsr.isActive())
-        adsr.applyEnvelopeToBuffer (synthBuffer, 0, synthBuffer.getNumSamples());
-    else
-        adsr2.applyEnvelopeToBuffer(synthBuffer, 0, synthBuffer.getNumSamples());
+    adsr.applyEnvelopeToBuffer (synthBuffer, 0, synthBuffer.getNumSamples());
     
     //if (startSample != 0)
         // jassertfalse;
@@ -103,7 +101,8 @@ void SynthVoice::renderNextBlock (juce::AudioBuffer< float > &outputBuffer, int 
         outputBuffer.addFrom (channel, startSample, synthBuffer, channel, 0, numSamples);
         if (! adsr.isActive())
             clearCurrentNote();
-    }*/
+    }
+    /*
     if (angleDelta != 0.0)
     {
         if (tailOff > 0.0)
@@ -142,5 +141,5 @@ void SynthVoice::renderNextBlock (juce::AudioBuffer< float > &outputBuffer, int 
                 ++startSample;
             }
         }
-    }
+    }*/
 }

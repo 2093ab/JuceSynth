@@ -103,13 +103,13 @@ void Synth_testAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     spec.maximumBlockSize = samplesPerBlock;
     */
     synth.setCurrentPlaybackSampleRate (sampleRate);
-    /*for (int i=0; i<synth.getNumVoices(); i++)
+    for (int i=0; i<synth.getNumVoices(); i++)
     {
         if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
         {
             voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
         }
-    }*/
+    }
 }
 
 void Synth_testAudioProcessor::releaseResources()
