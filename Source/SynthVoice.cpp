@@ -17,24 +17,27 @@ bool SynthVoice::canPlaySound (juce::SynthesiserSound* sound)
 
 void SynthVoice::startNote (int midiNoteNumber, float velocity, juce::SynthesiserSound *sound, int currentPitchWheelPosition)
 {
-    osc.setFrequency (juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber));
-    osc2.setFrequency (juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber));
-    if (adsr.isActive())
-        adsr.noteOn();
-    else
-        adsr2.noteOn();
+    currentAngle = 0.0f;
+    level = velocity * 0.15;
+    tailOff = 0.0;
+    
+    auto cyclesPerSecond = juce::MidiMessage::getMidiNoteInHertz (midiNoteNumber);
+    auto cyclesPerSample = cyclesPerSecond / getSampleRate();
+    
+    angleDelta = cyclesPerSample * 2.0 * juce::MathConstants<double>::pi;
 }
 
 void SynthVoice::stopNote (float velocity, bool allowTailOff)
 {
-    if (!adsr2.isActive())
-        adsr2.noteOff();
-    else
-        adsr.noteOff();
-    
-    if (! allowTailOff)
+    if (allowTailOff)
+    {
+        if (tailOff == 0.0)
+            tailOff = 1.0;
+    }
+    else{
         clearCurrentNote();
-    
+        angleDelta = 0.0;
+    }
 }
 
 void SynthVoice::controllerMoved (int controllerNumber, int newControllerValue)
@@ -67,14 +70,13 @@ void SynthVoice::prepareToPlay (double sampleRate, int samplesPerBlock, int outp
     adsrParams.release = 1.5f;
 
     adsr.setParameters (adsrParams);
-    adsr2.setParameters (adsrParams);
     isPrepared = true;
 }
 
 void SynthVoice::renderNextBlock (juce::AudioBuffer< float > &outputBuffer, int startSample, int numSamples)
 {
-    jassert(isPrepared);
-    
+    //jassert(isPrepared);
+    /*
     if (! isVoiceActive())
         return ;
     
@@ -101,5 +103,44 @@ void SynthVoice::renderNextBlock (juce::AudioBuffer< float > &outputBuffer, int 
         outputBuffer.addFrom (channel, startSample, synthBuffer, channel, 0, numSamples);
         if (! adsr.isActive())
             clearCurrentNote();
+    }*/
+    if (angleDelta != 0.0)
+    {
+        if (tailOff > 0.0)
+        {
+            while (--numSamples >= 0)
+            {
+                auto currentSample = (float) (std::sin (currentAngle) * level * tailOff);
+                
+                for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
+                    outputBuffer.addSample (i, startSample, currentSample);
+                
+                currentSample += angleDelta;
+                ++startSample;
+                
+                tailOff *= 0.99;
+                
+                if (tailOff <= 0.005)
+                {
+                    clearCurrentNote();
+                    
+                    angleDelta = 0.0;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            while (--numSamples >= 0)
+            {
+                auto currentSample = (float) (std::sin (currentAngle) * level);
+                
+                for (auto i = outputBuffer.getNumChannels();--i>=0;)
+                    outputBuffer.addSample (i, startSample, currentSample);
+                
+                currentAngle += angleDelta;
+                ++startSample;
+            }
+        }
     }
 }

@@ -26,12 +26,11 @@ public:
     
 private:
     juce::ADSR adsr;
-    juce::ADSR adsr2;
     juce::ADSR::Parameters adsrParams;
     juce::AudioBuffer<float> synthBuffer;
     
     juce::dsp::Oscillator<float> osc { [](float x) {return std::sin(x); } };
-    juce::dsp::Oscillator<float> osc2 { [](float x) {return std::sin(x); } };
+    double currentAngle = 0.0, angleDelta = 0.0, level = 0.0, tailOff = 0.0;
     juce::dsp::Gain<float> gain;
     bool isPrepared { false };
 };
