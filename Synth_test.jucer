@@ -5,6 +5,10 @@
               cppLanguageStandard="17" bundleIdentifier="com.soomin" companyName="Soomin">
   <MAINGROUP id="amyqlG" name="Synth_test">
     <GROUP id="{CDC76CBA-DF9D-729A-A1FF-5E321BD167E5}" name="Source">
+      <GROUP id="{F30C7449-3354-F87F-8BB4-1684C4806342}" name="GUI">
+        <FILE id="NIObAl" name="AdsrGui.cpp" compile="1" resource="0" file="Source/GUI/AdsrGui.cpp"/>
+        <FILE id="ntMZBS" name="AdsrGui.h" compile="0" resource="0" file="Source/GUI/AdsrGui.h"/>
+      </GROUP>
       <FILE id="cST7TF" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="ZRuD5a" name="PluginProcessor.h" compile="0" resource="0"

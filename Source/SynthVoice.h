@@ -3,7 +3,6 @@
 
     SynthVoice.h
     Created: 7 Mar 2022 1:47:02pm
-    Author:  길수민
 
   ==============================================================================
 */
@@ -24,6 +23,7 @@ public:
     void prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannles);
     void renderNextBlock (juce::AudioBuffer< float > &outputBuffer, int startSample, int numSamples) override;
     
+    void updateParams (const float attack, const float decay, const float sustain, const float release);
 private:
     juce::ADSR adsr;
     juce::ADSR::Parameters adsrParams;

@@ -3,7 +3,6 @@
 
     SynthVoice.cpp
     Created: 7 Mar 2022 1:47:02pm
-    Author:  길수민
 
   ==============================================================================
 */
@@ -142,4 +141,19 @@ void SynthVoice::renderNextBlock (juce::AudioBuffer< float > &outputBuffer, int 
             }
         }
     }*/
+}
+
+void SynthVoice::updateParams (
+                               const float attack,
+                               const float decay,
+                               const float sustain,
+                               const float release
+                               )
+{
+    adsrParams.attack = attack;
+    adsrParams.decay = decay;
+    adsrParams.sustain = sustain;
+    adsrParams.release = release;
+    
+    adsr.setParameters (adsrParams);
 }

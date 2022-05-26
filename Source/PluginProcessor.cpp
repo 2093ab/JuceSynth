@@ -157,9 +157,14 @@ void Synth_testAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
      
     for (int i = 0; i < synth.getNumVoices(); i++)
     {
-        if (auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(i)))
+        if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
         {
-            
+            auto& attack = *apvts.getRawParameterValue ("ATTACK");
+            auto& decay = *apvts.getRawParameterValue ("DECAY");
+            auto& sustain = *apvts.getRawParameterValue ("SUSTAIN");
+            auto& release = *apvts.getRawParameterValue ("RELEASE");
+        
+            voice->updateParams(attack.load(), decay.load(), sustain.load(), release.load());
         }
     }
     synth.renderNextBlock (buffer, midiMessages, 0, buffer.getNumSamples());
