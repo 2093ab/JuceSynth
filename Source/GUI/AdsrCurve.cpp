@@ -57,21 +57,27 @@ void AdsrCurve::paint (juce::Graphics& g)
     auto sustainValue = apvts.getRawParameterValue ("SUSTAIN")->load();
     auto releaseValue = apvts.getRawParameterValue ("RELEASE")->load();
 
-    adsrCurve.startNewSubPath (responseArea.getX(), responseArea.getY() + h);
-    adsrCurve.lineTo (responseArea.getX() + w * attackValue * 0.25,
-                      responseArea.getY());
-    adsrCurve.lineTo (adsrCurve.getCurrentPosition().getX() + w * 0.25 * decayValue,
-                      responseArea.getY() - sustainValue * h + h);
+    adsrCurve.startNewSubPath (responseArea.getX(), responseArea.getBottom());
+    adsrCurve.quadraticTo (responseArea.getX(), responseArea.getY(),
+                           responseArea.getX() + w * 0.125 * (attackValue + 1),
+                           responseArea.getY());
+    adsrCurve.quadraticTo (adsrCurve.getCurrentPosition().getX(),
+                           responseArea.getBottom() - sustainValue * h,
+                           adsrCurve.getCurrentPosition().getX() + w * 0.125 *(decayValue + 1),
+                           responseArea.getBottom() - sustainValue * h);
     adsrCurve.lineTo (adsrCurve.getCurrentPosition().getX() + w * 0.25,
-                      responseArea.getY() + h - sustainValue * h);
-    adsrCurve.lineTo (adsrCurve.getCurrentPosition().getX() + w * (0.25 / 3) * releaseValue,
-                      responseArea.getY() + h);
+                      adsrCurve.getCurrentPosition().getY());
+    adsrCurve.quadraticTo (adsrCurve.getCurrentPosition().getX(),
+                           responseArea.getBottom(),
+                           adsrCurve.getCurrentPosition().getX() + w * ((0.25 / 2) +
+                           (0.25 / 6) * releaseValue), responseArea.getBottom());
+    adsrCurve.closeSubPath();
     
     g.setColour (juce::Colours::black);
-    g.drawRoundedRectangle (responseArea.toFloat(), 4.1f, 1.f);
+    g.drawRoundedRectangle (getLocalBounds().reduced(0, 49).toFloat(), 1.1f, 1.f);
     
     g.setColour (juce::Colours::orange);
-    g.strokePath (adsrCurve, juce::PathStrokeType(2.f));
+    g.fillPath (adsrCurve);
 }
 
 void AdsrCurve::resized()
