@@ -50,16 +50,16 @@ void AdsrGui::resized()
     // This method is where you should set the bounds of any child
     // components that your component contains..
 
-    attackSlider.setBounds (20, 20, 100, 100);
-    decaySlider.setBounds (120, 20, 100, 100);
-    sustainSlider.setBounds (20, 120, 100, 100);
-    releaseSlider.setBounds (120, 120, 100, 100);
+    attackSlider.setBounds (20, 20, 60, 100);
+    decaySlider.setBounds (100, 20, 60, 100);
+    sustainSlider.setBounds (20, 120, 60, 100);
+    releaseSlider.setBounds (100, 120, 60, 100);
     
 }
 
 void AdsrGui::makeSlider(juce::Slider &slider, juce::AudioProcessorValueTreeState &apvts, juce::String apvtsId, std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> &attachment)
 {
-    slider.setTextBoxStyle (juce::Slider::TextBoxAbove, true, 80, 30);
+    slider.setTextBoxStyle (juce::Slider::TextBoxAbove, true, 50, 30);
     slider.setSliderStyle (juce::Slider::SliderStyle::LinearVertical);
     slider.setColour (juce::Slider::textBoxTextColourId, juce::Colours::dimgrey);
     addAndMakeVisible (slider);

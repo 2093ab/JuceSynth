@@ -13,12 +13,14 @@
 Synth_testAudioProcessorEditor::Synth_testAudioProcessorEditor (Synth_testAudioProcessor& p)
     : AudioProcessorEditor (&p),
         audioProcessor (p),
-        adsr (audioProcessor.apvts)
+        adsr (audioProcessor.apvts),
+        adsrCurve (audioProcessor.apvts)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    setSize (410, 300);
     addAndMakeVisible (adsr);
+    addAndMakeVisible (adsrCurve);
 }
 
 Synth_testAudioProcessorEditor::~Synth_testAudioProcessorEditor()
@@ -37,5 +39,6 @@ void Synth_testAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
-    adsr.setBounds (10, 10, 250, 250);
+    adsr.setBounds (10, 10, 190, 250);
+    adsrCurve.setBounds (210, 10, 190, 250);
 }

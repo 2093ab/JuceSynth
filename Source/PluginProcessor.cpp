@@ -206,10 +206,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout Synth_testAudioProcessor::cr
 {
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
     
-    params.push_back (std::make_unique<juce::AudioParameterFloat> ("ATTACK", "ATTACK", juce::NormalisableRange<float> { 0.1f, 1.0f, 0.1f }, 0.1f));
-    params.push_back (std::make_unique<juce::AudioParameterFloat> ("DECAY", "DECAY", juce::NormalisableRange<float> { 0.1f, 1.0f, 0.1f }, 0.1f));
-    params.push_back (std::make_unique<juce::AudioParameterFloat> ("SUSTAIN", "SUSTAIN", juce::NormalisableRange<float> { 0.1f, 1.0f, 0.1f }, 1.0f));
-    params.push_back (std::make_unique<juce::AudioParameterFloat> ("RELEASE", "RELEASE", juce::NormalisableRange<float> { 0.1f, 3.0f, 0.1f }, 0.4f));
+    params.push_back (std::make_unique<juce::AudioParameterFloat> (juce::ParameterID  {"ATTACK", 1}, "ATTACK", juce::NormalisableRange<float> { 0.1f, 1.0f, 0.1f }, 0.1f));
+    params.push_back (std::make_unique<juce::AudioParameterFloat> (juce::ParameterID {"DECAY", 1}, "DECAY", juce::NormalisableRange<float> { 0.1f, 1.0f, 0.1f }, 0.1f));
+    params.push_back (std::make_unique<juce::AudioParameterFloat> (juce::ParameterID {"SUSTAIN", 1}, "SUSTAIN", juce::NormalisableRange<float> { 0.1f, 1.0f, 0.1f }, 1.0f));
+    params.push_back (std::make_unique<juce::AudioParameterFloat> (juce::ParameterID {"RELEASE", 1}, "RELEASE", juce::NormalisableRange<float> { 0.1f, 3.0f, 0.1f }, 0.4f));
     
     return { params.begin(), params.end() };
 }

@@ -23,7 +23,11 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    void makeSlider (juce::Slider &slider, juce::AudioProcessorValueTreeState &apvts, juce::String apvtsId, std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> &attachment);
+    void makeSlider (
+                     juce::Slider &slider,
+                     juce::AudioProcessorValueTreeState &apvts,
+                     juce::String apvtsId,
+                     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> &attachment);
 private:
     juce::Slider attackSlider;
     juce::Slider decaySlider;
